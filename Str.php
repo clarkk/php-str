@@ -3,11 +3,21 @@
 namespace Str;
 
 class Str {
+	const NBSP 			= "\xA0";
+	const NBSP_UTF8 	= "\xC2\xA0";
+	const NBSP_UNICODE 	= "\x00\xA0";
+	
 	static public function filter_utf8(string $value, bool $allow_newlines=true): string{
 		return preg_replace('/[^[:print:]'.($allow_newlines ? '\n' : '').']/u', '', mb_convert_encoding($value, 'UTF-8'));
 	}
 	
 	static public function trim(string $value, bool $allow_newlines=true): string{
+		$value = strtr($value, [
+			self::NBSP_UTF8 	=> ' ',
+			self::NBSP_UNICODE 	=> ' ',
+			self::NBSP 			=> ' '
+		]);
+		
 		if($allow_newlines){
 			$has_newline = strpos($value, "\n") !== false;
 			if($has_newline){
