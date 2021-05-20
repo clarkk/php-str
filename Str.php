@@ -6,7 +6,6 @@ class Str {
 	const NBSP 			= "\xA0";
 	const NBSP_UTF8 	= "\xC2\xA0";
 	const NBSP_UNICODE 	= "\x00\xA0";
-	const NNBSP_UNICODE = "\x20\x2F";
 	
 	static public function filter_utf8(string $value, bool $allow_newlines=true): string{
 		return preg_replace('/[^[:print:]'.($allow_newlines ? '\n' : '').']/u', '', mb_convert_encoding($value, 'UTF-8'));
@@ -16,7 +15,6 @@ class Str {
 		$value = strtr($value, [
 			self::NBSP_UTF8 	=> ' ',
 			self::NBSP_UNICODE 	=> ' ',
-			self::NNBSP_UNICODE => ' ',
 			self::NBSP 			=> ' '
 		]);
 		
