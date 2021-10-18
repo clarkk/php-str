@@ -5,21 +5,21 @@ namespace Str;
 class Str {
 	// Non-breaking spaces
 	const NBSP 			= "\xA0";
-	const NBSP_UTF8 	= "\xC2\xA0";
-	const NBSP_UNICODE 	= "\x00\xA0";
+	const NBSP_UTF8 	= "\xC2".self::NBSP;
+	const NBSP_UNICODE 	= "\x00".self::NBSP;
 	
 	static public function filter_utf8(string $value, bool $allow_newlines=true): string{
 		return preg_replace('/[^[:print:]'.($allow_newlines ? '\n' : '').']/u', '', mb_convert_encoding($value, 'UTF-8'));
 	}
 	
 	static public function trim(string $value, bool $allow_newlines=true): string{
-		$value = strtr($value, [
-			self::NBSP_UTF8 	=> ' ',
-			self::NBSP_UNICODE 	=> ' '
-		]);
-		
-		//	Avoid breaking UTF8 unicode chars
 		if(strpos($value, self::NBSP) !== false){
+			$value = strtr($value, [
+				self::NBSP_UTF8 	=> ' ',
+				self::NBSP_UNICODE 	=> ' '
+			]);
+			
+			//	Avoid breaking UTF8 unicode chars
 			$value = preg_replace('/\\xA0/u', ' ', $value);
 		}
 		
