@@ -3,6 +3,7 @@
 namespace Str;
 
 class Str {
+	// Non-breaking spaces
 	const NBSP 			= "\xA0";
 	const NBSP_UTF8 	= "\xC2\xA0";
 	const NBSP_UNICODE 	= "\x00\xA0";
@@ -14,9 +15,13 @@ class Str {
 	static public function trim(string $value, bool $allow_newlines=true): string{
 		$value = strtr($value, [
 			self::NBSP_UTF8 	=> ' ',
-			self::NBSP_UNICODE 	=> ' ',
-			self::NBSP 			=> ' '
+			self::NBSP_UNICODE 	=> ' '
 		]);
+		
+		//	Avoid breaking UTF8 unicode chars
+		if(strpos($value, self::NBSP) !== false){
+			$value = preg_replace('/\\xA0/u', ' ', $value);
+		}
 		
 		if($allow_newlines){
 			$has_newline = strpos($value, "\n") !== false;
