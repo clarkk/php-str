@@ -63,7 +63,7 @@ class Str {
 		
 		if(strpos($value, self::SHY) !== false){
 			$value = strtr($value, [
-				self::SHY_UTF8 		= '-',
+				self::SHY_UTF8 		=> '-',
 				self::SHY_UNICODE 	=> '-'
 			]);
 			
