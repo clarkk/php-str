@@ -10,12 +10,14 @@ class Str {
 	
 	//	Soft hyphen
 	const SHY 			= "\xAD";
+	const SHY_UTF8 		= "\xC2".self::SHY;
 	const SHY_UNICODE 	= "\x00".self::SHY;
 	
 	//	Non-breaking hyphen
 	const NBHY 			= "\x20\x11";
 	
 	//	Dashes
+	// https://en.wikipedia.org/wiki/Hyphen#Soft_and_hard_hyphens
 	// figure dash
 	// en dash
 	// em dash
@@ -61,6 +63,7 @@ class Str {
 		
 		if(strpos($value, self::SHY) !== false){
 			$value = strtr($value, [
+				self::SHY_UTF8 		= '-',
 				self::SHY_UNICODE 	=> '-'
 			]);
 			
