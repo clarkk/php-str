@@ -3,6 +3,13 @@
 namespace Str;
 
 class Format {
+	static private $datasize_units = [
+		'Gb'	=> 1024 * 1024 * 1024,
+		'Mb'	=> 1024 * 1024,
+		'Kb'	=> 1024,
+		'Bytes'	=> 1
+	];
+	
 	static public function xml_decode(string $xml): array{
 		$xml 	= simplexml_load_string($xml);
 		$json 	= json_encode($xml);
@@ -17,14 +24,17 @@ class Format {
 	}
 	
 	static public function amount(string $amount): int{
-		/*$amount = str_replace(' ', '', $amount);
-		$pos_dot = strpos($amount, '.');
-		$pos_comma = strpos($amount, ',');
-		if($pos_dot !== false && $pos_comma !== false){
-			$amount = str_replace($pos_dot > $pos_comma ? ',' : '.', '', $amount);
+		$locale = \dbdata\Lang::get_locale();
+		
+		$amount = str_replace(' ', '', $amount);
+		$d = strrpos($amount, $locale['decimal_point']);
+		$t = strrpos($amount, $locale['thousands_sep']);
+		
+		if($d !== false && $t !== false){
+			$amount = str_replace(max($d, $t) == $d ? $locale['thousands_sep'] : $locale['decimal_point'], '', $amount);
 		}
 		
-		return (int)round(((float)str_replace(',', '.', $amount) * 100));*/
+		return round(str_replace(',', '.', $amount) * 100);
 	}
 	
 	static public function datasize(int $int): string{
@@ -32,11 +42,7 @@ class Format {
 			return '0';
 		}
 		
-		foreach([
-			'Mb'	=> 1024 * 1024,
-			'Kb'	=> 1024,
-			'Bytes'	=> 1
-		] as $unit => $value){
+		foreach(self::$datasize_units as $unit => $value){
 			$scale = $int / $value;
 			if($scale >= 1){
 				return self::num($scale, is_int($scale) ? 0 : 2).' '.$unit;
