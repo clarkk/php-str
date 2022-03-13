@@ -25,10 +25,9 @@ class Format {
 	
 	static public function amount(string $amount): int{
 		$locale = \dbdata\Lang::get_locale();
-		
 		$amount = str_replace(' ', '', $amount);
-		$d = strrpos($amount, $locale['decimal_point']);
-		$t = strrpos($amount, $locale['thousands_sep']);
+		$d 		= strrpos($amount, $locale['decimal_point']);
+		$t 		= strrpos($amount, $locale['thousands_sep']);
 		
 		if($d !== false && $t !== false){
 			$amount = str_replace(max($d, $t) == $d ? $locale['thousands_sep'] : $locale['decimal_point'], '', $amount);
