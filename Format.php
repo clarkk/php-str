@@ -34,7 +34,7 @@ class Format {
 			$amount = str_replace(max($d, $t) == $d ? $locale['thousands_sep'] : $locale['decimal_point'], '', $amount);
 		}
 		
-		return round(str_replace(',', '.', $amount) * 100);
+		return round((float)str_replace(',', '.', $amount) * 100);
 	}
 	
 	static public function datasize(int $int): string{
