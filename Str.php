@@ -27,6 +27,13 @@ class Str {
 		return preg_replace('/[^[:print:]'.($allow_newlines ? '\n' : '').']/u', '', mb_convert_encoding($value, 'UTF-8'));
 	}
 	
+	static public function filter_ctrl_chars(string $value): string{
+		//	\P{C} is the same as [^\p{C}]
+		//	Therefore [^\P{C}] is the same as \p{C}
+		
+		return preg_replace('/[^\PC\n]+/u', '', $value);
+	}
+	
 	static public function trim(string $value, bool $allow_newlines=true): string{
 		self::normalize($value);
 		
