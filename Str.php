@@ -44,7 +44,7 @@ class Str {
 	}
 	
 	static public function is_valid_utf8(string $value): bool{
-		return preg_match(self::PATTERN_FILTER_PRINT_S.'u', $value);
+		return preg_match(self::PATTERN_FILTER_PRINT_S.'u', $value) ? false : true;
 	}
 	
 	static public function check_printable_ratio(string $value): bool{
