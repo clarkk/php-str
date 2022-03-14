@@ -47,11 +47,12 @@ class Str {
 		return preg_match(self::PATTERN_FILTER_PRINT_S.'u', $value) ? false : true;
 	}
 	
-	static public function check_printable_ratio(string $value): bool{
-		$non_printable 	= preg_match_all(self::PATTERN_FILTER_PRINT_S, $value);
-		$printable 		= preg_match_all(self::PATTERN_MATCH_PRINT_S, $value);
+	static public function check_printable_ratio(string $value, bool $utf8=false): bool{
+		$strlen 		= $utf8 ? mb_strlen($value) : strlen($value);
+		$non_printable 	= preg_match_all(self::PATTERN_FILTER_PRINT_S.($utf8 ? 'u' : ''), $value);
+		$printable 		= preg_match_all(self::PATTERN_MATCH_PRINT_S.($utf8 ? 'u' : ''), $value);
 		
-		return !$printable || $printable != strlen($value) - $non_printable ? false : true;
+		return !$printable || $printable != $strlen - $non_printable ? false : true;
 	}
 	
 	static public function trim(string $value, bool $allow_newlines=true): string{
