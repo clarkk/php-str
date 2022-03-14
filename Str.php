@@ -23,15 +23,35 @@ class Str {
 	// em dash
 	// horizontal bar
 	
+	/*
+		https://www.regular-expressions.info/unicode.html
+		
+		[:print:] == \p{Print} == \pP, negation: \P{Print} == \PP
+		[:cntrl:] == \p{Cntrl} == \pC, negation: \P{Cntrl} == \PC
+		
+		- \PC is the same as [^\pC]					(matches all non control chars)
+		- Therefore [^\PC] is the same as \pC 		(matches control chars)
+	*/
+	
+	const PATTERN_FILTER_PRINT 		= '/[^\P{Cc}\p{Cf}\p{Cn}\p{Cs}]/';
+	const PATTERN_FILTER_PRINT_N 	= '/[^\P{Cc}\p{Cf}\p{Cn}\p{Cs}\n]/';
+	const PATTERN_FILTER_PRINT_S 	= '/[^\P{Cc}\p{Cf}\p{Cn}\p{Cs}\s]/';
+	
+	const PATTERN_MATCH_PRINT_S 	= '/[\PC\s]/';
+	
 	static public function filter_utf8(string $value, bool $allow_newlines=true): string{
-		return preg_replace('/[^[:print:]'.($allow_newlines ? '\n' : '').']/u', '', mb_convert_encoding($value, 'UTF-8'));
+		return preg_replace(($allow_newlines ? self::PATTERN_FILTER_PRINT_N : self::PATTERN_FILTER_PRINT).'u', '', mb_convert_encoding($value, 'UTF-8'));
 	}
 	
-	static public function filter_ctrl_chars(string $value): string{
-		//	\P{C} is the same as [^\p{C}]
-		//	Therefore [^\P{C}] is the same as \p{C}
+	static public function is_valid_utf8(string $value): bool{
+		return preg_match(self::PATTERN_FILTER_PRINT_S.'u', $value);
+	}
+	
+	static public function check_printable_ratio(string $value): bool{
+		$non_printable 	= preg_match_all(self::PATTERN_FILTER_PRINT_S, $value);
+		$printable 		= preg_match_all(self::PATTERN_MATCH_PRINT_S, $value);
 		
-		return preg_replace('/[^\PC\n]+/u', '', $value);
+		return !$printable || $printable != strlen($value) - $non_printable ? false : true;
 	}
 	
 	static public function trim(string $value, bool $allow_newlines=true): string{
