@@ -39,8 +39,21 @@ class Str {
 	
 	const PATTERN_MATCH_PRINT_S 	= '/[\PC\s]/';
 	
-	static public function filter_utf8(string $value, bool $allow_newlines=true): string{
-		return preg_replace(($allow_newlines ? self::PATTERN_FILTER_PRINT_N : self::PATTERN_FILTER_PRINT).'u', '', mb_convert_encoding($value, 'UTF-8'));
+	static public function filter_utf8(string $value, string $allow_whitespace='n'): string{
+		switch($allow_whitespace){
+			case 'n':
+				$pattern = self::PATTERN_FILTER_PRINT_N;
+				break;
+			
+			case 's':
+				$pattern = self::PATTERN_FILTER_PRINT_S;
+				break;
+			
+			default:
+				$pattern = self::PATTERN_FILTER_PRINT;
+		}
+		
+		return preg_replace($pattern.'u', '', mb_convert_encoding($value, 'UTF-8'));
 	}
 	
 	static public function is_valid_utf8(string $value): bool{
