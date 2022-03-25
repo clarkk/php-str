@@ -17,10 +17,10 @@ class Format {
 		return json_decode($json, true);
 	}
 	
-	static public function num(float $num, int $dec=0, string $thousand_sep='', string $decimal_sep=''): string{
+	static public function num(float $num, int $dec=0, ?string $thousand_sep=null, ?string $decimal_sep=null): string{
 		$locale = \dbdata\Lang::get_locale();
 		
-		return number_format($num, $dec, $decimal_sep ?: $locale['decimal_point'], $thousand_sep ?: $locale['thousands_sep']);
+		return number_format($num, $dec, $decimal_sep ?? $locale['decimal_point'], $thousand_sep ?? $locale['thousands_sep']);
 	}
 	
 	static public function amount(string $amount): int{
