@@ -52,7 +52,7 @@ class Format {
 	}
 	
 	static private function get_locale(): array{
-		if(class_exists('\\dbdata\\Lang')){
+		if(class_exists('\dbdata\Lang', false)){
 			return \dbdata\Lang::get_locale();
 		}
 		else{
