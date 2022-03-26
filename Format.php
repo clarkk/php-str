@@ -18,13 +18,13 @@ class Format {
 	}
 	
 	static public function num(float $num, int $dec=0, ?string $thousand_sep=null, ?string $decimal_sep=null): string{
-		$locale = \dbdata\Lang::get_locale();
+		$locale = self::get_locale();
 		
 		return number_format($num, $dec, $decimal_sep ?? $locale['decimal_point'], $thousand_sep ?? $locale['thousands_sep']);
 	}
 	
 	static public function amount(string $amount): int{
-		$locale = \dbdata\Lang::get_locale();
+		$locale = self::get_locale();
 		$amount = str_replace(' ', '', $amount);
 		$d 		= strrpos($amount, $locale['decimal_point']);
 		$t 		= strrpos($amount, $locale['thousands_sep']);
@@ -49,5 +49,19 @@ class Format {
 		}
 		
 		return '0';
+	}
+	
+	static private function get_locale(): array{
+		if(class_exists('\\dbdata\\Lang')){
+			return \dbdata\Lang::get_locale();
+		}
+		else{
+			$localeconv = localeconv();
+			
+			return [
+				'decimal_point'	=> $localeconv['mon_decimal_point'],
+				'thousands_sep'	=> $localeconv['mon_thousands_sep']
+			];
+		}
 	}
 }
