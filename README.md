@@ -29,8 +29,8 @@ $is_valid_utf8 = \Str\Str::is_valid_utf8($str);
 ```
 
 ### Trim string
-- Trims multilined string each line independently
-- Trims multilined string multiple continguous line spaces (\n\n+) to maximum two (\n\n)
+- Trims multi-lined string each line independently
+- Trims multi-lined string multiple continguous line spaces (\n\n+) to maximum two (\n\n)
 - Normalizes whitespaces before trimming `\Str\Str::normalize()`
 ```
 $trimmed_str = \Str\Str::trim($str);
