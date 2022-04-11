@@ -19,6 +19,9 @@ class Format {
 		
 		self::$decimal_point 	= $localeconv['mon_decimal_point'];
 		self::$thousand_sep 	= $localeconv['mon_thousands_sep'];
+		
+		setlocale(LC_COLLATE, $locale);
+		setlocale(LC_CTYPE, $locale);
 	}
 	
 	static public function xml_decode(string $xml): array{
