@@ -3,10 +3,10 @@ Small bundle of methods to sanitize and format strings
 
 ## Classes
 - [\Str\Str](#strstr)
-  - [Sanitize UTF8](#sanitizeutf8filternonvalidutf8chars)
-  - [Validate UTF8](#validateutf8)
-  - [Trim string](#trimstring)
-  - [Normalize string](#normalizestring)
+  - [Sanitize UTF8](#sanitize-utf8-filter-non-valid-utf8-chars)
+  - [Validate UTF8](#validate-utf8)
+  - [Trim string](#trim-string)
+  - [Normalize string](#normalize-string)
 - [\Str\Format](#strformat)
 
 ## \Str\Str
