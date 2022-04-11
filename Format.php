@@ -13,6 +13,9 @@ class Format {
 	static private $decimal_point 	= '.';
 	static private $thousand_sep 	= ',';
 	
+	const DECIMAL_POINT = 'decimal_point';
+	const THOUSAND_SEP 	= 'thousands_sep';
+	
 	static public function init(string $locale){
 		setlocale(LC_MONETARY, $locale);
 		$localeconv = localeconv();
@@ -22,6 +25,13 @@ class Format {
 		
 		setlocale(LC_COLLATE, $locale);
 		setlocale(LC_CTYPE, $locale);
+	}
+	
+	static public function get_locale(): array{
+		return [
+			self::DECIMAL_POINT	=> self::$decimal_point,
+			self::THOUSAND_SEP	=> self::$thousand_sep
+		];
 	}
 	
 	static public function xml_decode(string $xml): array{
