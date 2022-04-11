@@ -41,14 +41,17 @@ class Str {
 	
 	static public function filter_utf8(string $value, string $allow_whitespace='n'): string{
 		switch($allow_whitespace){
+			//	Allows space and new line (\n)
 			case 'n':
 				$pattern = self::PATTERN_FILTER_PRINT_N;
 				break;
 			
+			//	Allows all whitespaces (\n\r\t)
 			case 's':
 				$pattern = self::PATTERN_FILTER_PRINT_S;
 				break;
 			
+			//	Only allows space
 			default:
 				$pattern = self::PATTERN_FILTER_PRINT;
 		}

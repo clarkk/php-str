@@ -2,29 +2,29 @@
 String UTF8 filtering and normalizing
 
 ## Filter non valid UTF8 chars
-### Allow only spaces
+### Allows only spaces
 ```
 $valid_utf8_str = \Str\Str::filter_utf8($str);
 ```
 
-### Allow only spaces and new lines (\n)
+### Allows only spaces and new lines (\n)
 ```
 $valid_utf8_str = \Str\Str::filter_utf8($str, 'n');
 ```
 
-### Allow spaces and all whitespaces (\n\r\t)
+### Allows spaces and all whitespaces (\n\r\t)
 ```
 $valid_utf8_str = \Str\Str::filter_utf8($str, 's');
 ```
 
-## Validate UTF8
+## Validates UTF8
 ```
 $is_valid_utf8 = \Str\Str::is_valid_utf8($str);
 ```
 
-## Trim string
-- Trims a string
-- Multilined string trims each line independently
+## Trims string
+- Trims multilined string each line independently
+- Trims multilined string multiple continguous line spaces (\n\n+) to maximum two (\n\n)
 - Normalizes whitespaces before trimming `\Str\Str::normalize()`
 ```
 $trimmed_str = \Str\Str::trim($str);
