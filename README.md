@@ -33,7 +33,10 @@ $is_valid_utf8 = \Str\Str::is_valid_utf8($str);
 - Trims multi-lined string multiple continguous line spaces (\n\n+) to maximum two (\n\n)
 - Normalizes whitespaces before trimming `\Str\Str::normalize()`
 ```
-$trimmed_str = \Str\Str::trim($str);
+//  For the trim to work properly on multi-line strings filter out carriage return (\r)
+$valid_utf8_str  = \Str\Str::filter_utf8($str, 'n');
+
+$trimmed_str     = \Str\Str::trim($valid_utf8_str);
 ```
 
 ### Normalize string
