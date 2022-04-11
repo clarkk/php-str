@@ -1,28 +1,34 @@
 # php-str
-String UTF8 filtering and normalizing
+Small bundle of methods to sanitize and format strings
 
-## Filter non valid UTF8 chars
-### Allows only spaces
+## Classes
+- [\Str\Str](#strstr)
+  - [Sanitize UTF8](#sanitizeutf8filternonvalidutf8chars)
+  - [Validate UTF8](#validateutf8)
+  - [Trim string](#trimstring)
+  - [Normalize string](#normalizestring)
+- [\Str\Format](#strformat)
+
+## \Str\Str
+
+### Sanitize UTF8 (filter non valid UTF8 chars)
 ```
+//  Allow only spaces
 $valid_utf8_str = \Str\Str::filter_utf8($str);
-```
 
-### Allows only spaces and new lines (\n)
-```
+//  Allow only spaces and new lines (\n)
 $valid_utf8_str = \Str\Str::filter_utf8($str, 'n');
-```
 
-### Allows spaces and all whitespaces (\n\r\t)
-```
+//  Allow spaces and all whitespaces (\n\r\t)
 $valid_utf8_str = \Str\Str::filter_utf8($str, 's');
 ```
 
-## Validates UTF8
+### Validate UTF8
 ```
 $is_valid_utf8 = \Str\Str::is_valid_utf8($str);
 ```
 
-## Trims string
+### Trim string
 - Trims multilined string each line independently
 - Trims multilined string multiple continguous line spaces (\n\n+) to maximum two (\n\n)
 - Normalizes whitespaces before trimming `\Str\Str::normalize()`
@@ -30,9 +36,27 @@ $is_valid_utf8 = \Str\Str::is_valid_utf8($str);
 $trimmed_str = \Str\Str::trim($str);
 ```
 
-## Normalize string
+### Normalize string
 - Converts different kinds of hyphen (-) to minus char (-)
 - Converts different kinds of spaces like non-breaking spaces to a normal space.
 ```
 $normalized_str = \Str\Str::normalize($str);
+```
+
+## \Str\Format
+```
+//  Set local conversion
+\Str\Format::init('da_DK');
+
+//  Converts a int/float to monetary string
+echo \Str\Format::num(123456.89, 2); // 123.456,89
+
+//	Converts a monetary string to int
+echo \Str\Format::amount('123.456,89'); // 12345689
+
+//  Converts Bytes to human-readable string
+echo \Str\Format::datasize(1231234); // 1,17 Mb
+
+//  Converts a XML string to a simple JSON object
+$json = \Str\Format::xml_decode($xml);
 ```
