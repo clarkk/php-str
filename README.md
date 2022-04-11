@@ -51,7 +51,7 @@ $normalized_str = \Str\Str::normalize($str);
 //  Converts a int/float to monetary string
 echo \Str\Format::num(123456.89, 2); // 123.456,89
 
-//	Converts a monetary string to int
+//  Converts a monetary string to int
 echo \Str\Format::amount('123.456,89'); // 12345689
 
 //  Converts Bytes to human-readable string
