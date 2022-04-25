@@ -41,6 +41,10 @@ class Format {
 		return json_decode($json, true);
 	}
 	
+	static public function dec(float $num, int $dec=0, ?string $decimal_sep=null): string{
+		return number_format($num, $dec, $decimal_sep ?? self::$decimal_point, '');
+	}
+	
 	static public function num(float $num, int $dec=0, ?string $thousand_sep=null, ?string $decimal_sep=null): string{
 		return number_format($num, $dec, $decimal_sep ?? self::$decimal_point, $thousand_sep ?? self::$thousand_sep);
 	}
