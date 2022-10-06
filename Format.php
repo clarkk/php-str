@@ -57,6 +57,12 @@ class Format {
 		if($d !== false && $t !== false){
 			$amount = str_replace(max($d, $t) == $d ? self::$thousand_sep : self::$decimal_point, '', $amount);
 		}
+		elseif($d !== false || $t !== false){
+			//	Strip all if only thousand separator
+			if(strlen($amount) - max($d, $t) - 1 == 3){
+				$amount = str_replace([self::$thousand_sep, self::$decimal_point], '', $amount);
+			}
+		}
 		
 		return round((float)str_replace(',', '.', $amount) * 100);
 	}
