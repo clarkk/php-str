@@ -3,6 +3,8 @@
 namespace Str;
 
 class Str {
+	const ENC_UTF8 		= 'UTF-8';
+	
 	//	Non-breaking spaces
 	const NBSP 			= "\xA0";
 	const NBSP_UTF8 	= "\xC2".self::NBSP;
@@ -39,7 +41,7 @@ class Str {
 	
 	const PATTERN_MATCH_PRINT_S 	= '/[\PC\s]/';
 	
-	static public function filter_utf8(string $value, string $allow_whitespace='n', bool $strip_mb4=true): string{
+	static public function filter_utf8(string $str, string $encoding=self::ENC_UTF8, string $allow_whitespace='n', bool $strip_mb4=true): string{
 		switch($allow_whitespace){
 			//	Allows space and new line (\n)
 			case 'n':
@@ -56,73 +58,73 @@ class Str {
 				$pattern = self::PATTERN_FILTER_PRINT;
 		}
 		
-		$value = preg_replace($pattern.'u', '', mb_convert_encoding($value, 'UTF-8'));
+		$str = preg_replace($pattern.'u', '', mb_convert_encoding($str, self::ENC_UTF8, $encoding));
 		if($strip_mb4){
-			$value = self::strip_mb4($value);
+			$str = self::strip_mb4($str);
 		}
 		
-		return $value;
+		return $str;
 	}
 	
-	static public function is_valid_utf8(string $value): bool{
-		return preg_match(self::PATTERN_FILTER_PRINT_S.'u', $value) ? false : true;
+	static public function is_valid_utf8(string $str): bool{
+		return preg_match(self::PATTERN_FILTER_PRINT_S.'u', $str) ? false : true;
 	}
 	
-	static public function check_printable_ratio(string $value, bool $utf8=false): bool{
-		$strlen 		= $utf8 ? mb_strlen($value) : strlen($value);
-		$non_printable 	= preg_match_all(self::PATTERN_FILTER_PRINT_S.($utf8 ? 'u' : ''), $value);
-		$printable 		= preg_match_all(self::PATTERN_MATCH_PRINT_S.($utf8 ? 'u' : ''), $value);
+	static public function check_printable_ratio(string $str, bool $utf8=false): bool{
+		$strlen 		= $utf8 ? mb_strlen($str) : strlen($str);
+		$non_printable 	= preg_match_all(self::PATTERN_FILTER_PRINT_S.($utf8 ? 'u' : ''), $str);
+		$printable 		= preg_match_all(self::PATTERN_MATCH_PRINT_S.($utf8 ? 'u' : ''), $str);
 		
 		return !$printable || $printable != $strlen - $non_printable ? false : true;
 	}
 	
-	static public function trim(string $value, bool $allow_newlines=true): string{
-		self::normalize($value);
+	static public function trim(string $str, bool $allow_newlines=true): string{
+		self::normalize($str);
 		
 		if($allow_newlines){
-			$has_newline = strpos($value, "\n") !== false;
+			$has_newline = strpos($str, "\n") !== false;
 			if($has_newline){
-				$value = implode("\n", array_map('trim', explode("\n", $value)));
+				$str = implode("\n", array_map('trim', explode("\n", $str)));
 			}
 		}
 		
-		$value = trim($value);
+		$str = trim($str);
 		
-		if($allow_newlines && $has_newline && strpos($value, "\n\n\n") !== false){
-			$value = preg_replace("/\n{3,}/", "\n\n", $value);
+		if($allow_newlines && $has_newline && strpos($str, "\n\n\n") !== false){
+			$str = preg_replace("/\n{3,}/", "\n\n", $str);
 		}
 		
-		if(strpos($value, '  ') !== false){
-			$value = preg_replace('/ +/', ' ', $value);
+		if(strpos($str, '  ') !== false){
+			$str = preg_replace('/ +/', ' ', $str);
 		}
 		
-		return $value;
+		return $str;
 	}
 	
-	static public function normalize(string &$value){
-		if(strpos($value, self::NBSP) !== false){
-			$value = strtr($value, [
+	static public function normalize(string &$str): void{
+		if(strpos($str, self::NBSP) !== false){
+			$str = strtr($str, [
 				self::NBSP_UTF8 	=> ' ',
 				self::NBSP_UNICODE 	=> ' '
 			]);
 			
 			//	Avoid breaking UTF8 unicode chars
-			$value = preg_replace('/\xA0/u', ' ', $value);
+			$str = preg_replace('/\xA0/u', ' ', $str);
 		}
 		
-		if(strpos($value, self::SHY) !== false){
-			$value = strtr($value, [
+		if(strpos($str, self::SHY) !== false){
+			$str = strtr($str, [
 				self::SHY_UTF8 		=> '-',
 				self::SHY_UNICODE 	=> '-'
 			]);
 			
 			//	Avoid breaking UTF8 unicode chars
-			$value = preg_replace('/\xAD/u', '-', $value);
+			$str = preg_replace('/\xAD/u', '-', $str);
 		}
 		
-		if(strpos($value, self::NBHY) !== false){
+		if(strpos($str, self::NBHY) !== false){
 			//	Avoid breaking UTF8 unicode chars
-			$value = preg_replace('/\x20\x11/u', '-', $value);
+			$str = preg_replace('/\x20\x11/u', '-', $str);
 		}
 	}
 	
