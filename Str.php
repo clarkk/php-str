@@ -39,7 +39,7 @@ class Str {
 	
 	const PATTERN_MATCH_PRINT_S 	= '/[\PC\s]/';
 	
-	static public function filter_utf8(string $value, string $allow_whitespace='n'): string{
+	static public function filter_utf8(string $value, string $allow_whitespace='n', bool $strip_mb4=true): string{
 		switch($allow_whitespace){
 			//	Allows space and new line (\n)
 			case 'n':
@@ -56,7 +56,12 @@ class Str {
 				$pattern = self::PATTERN_FILTER_PRINT;
 		}
 		
-		return preg_replace($pattern.'u', '', mb_convert_encoding($value, 'UTF-8'));
+		$value = preg_replace($pattern.'u', '', mb_convert_encoding($value, 'UTF-8'));
+		if($strip_mb4){
+			$value = self::strip_mb4($value);
+		}
+		
+		return $value;
 	}
 	
 	static public function is_valid_utf8(string $value): bool{
@@ -119,5 +124,16 @@ class Str {
 			//	Avoid breaking UTF8 unicode chars
 			$value = preg_replace('/\x20\x11/u', '-', $value);
 		}
+	}
+	
+	static private function strip_mb4(string $str): string{
+		// https://www.compart.com/en/unicode/plane
+		// https://unicode.org/emoji/charts/index.html
+		
+		$planes_1_3 	= '\xF0[\x90-\xBF][\x80-\xBF]{2}';
+		$planes_4_15 	= '[\xF1-\xF3][\x80-\xBF]{3}';
+		$plane_16 		= '\xF4[\x80-\x8F][\x80-\xBF]{2}';
+		
+		return preg_replace("/(?:$planes_1_3|$planes_4_15|$plane_16)/", '', $str);
 	}
 }
