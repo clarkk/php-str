@@ -68,6 +68,10 @@ class Str {
 		return $str;
 	}
 	
+	static public function decode_utf8(string $str): string{
+		return mb_convert_encoding($str, self::ENC_LATIN, self::ENC_UTF8);
+	}
+	
 	static public function is_valid_utf8(string $str): bool{
 		return preg_match(self::PATTERN_FILTER_PRINT_S.'u', $str) ? false : true;
 	}
