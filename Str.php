@@ -3,20 +3,22 @@
 namespace Str;
 
 class Str {
-	const ENC_UTF8 		= 'UTF-8';
+	const ENC_UTF8 			= 'UTF-8';
+	const ENC_LATIN 		= 'ISO-8859-1';
+	const ENC_LATIN_WIN 	= 'WINDOWS-1252';
 	
 	//	Non-breaking spaces
-	const NBSP 			= "\xA0";
-	const NBSP_UTF8 	= "\xC2".self::NBSP;
-	const NBSP_UNICODE 	= "\x00".self::NBSP;
+	const NBSP 				= "\xA0";
+	const NBSP_UTF8 		= "\xC2".self::NBSP;
+	const NBSP_UNICODE 		= "\x00".self::NBSP;
 	
 	//	Soft hyphen
-	const SHY 			= "\xAD";
-	const SHY_UTF8 		= "\xC2".self::SHY;
-	const SHY_UNICODE 	= "\x00".self::SHY;
+	const SHY 				= "\xAD";
+	const SHY_UTF8 			= "\xC2".self::SHY;
+	const SHY_UNICODE 		= "\x00".self::SHY;
 	
 	//	Non-breaking hyphen
-	const NBHY 			= "\x20\x11";
+	const NBHY 				= "\x20\x11";
 	
 	//	Dashes
 	// https://en.wikipedia.org/wiki/Hyphen#Soft_and_hard_hyphens
@@ -41,7 +43,7 @@ class Str {
 	
 	const PATTERN_MATCH_PRINT_S 	= '/[\PC\s]/';
 	
-	static public function filter_utf8(string $str, string $encoding=self::ENC_UTF8, string $allow_whitespace='n', bool $strip_mb4=true): string{
+	static public function filter_utf8(string $str, string $encoding=self::ENC_LATIN, string $allow_whitespace='n', bool $strip_mb4=true): string{
 		switch($allow_whitespace){
 			//	Allows space and new line (\n)
 			case 'n':
