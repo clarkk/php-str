@@ -76,12 +76,21 @@ class Str {
 		return preg_match(self::PATTERN_FILTER_PRINT_S.'u', $str) ? false : true;
 	}
 	
-	static public function check_printable_ratio(string $str, bool $utf8=false): bool{
+	static public function check_printable_ratio(string $str, bool $utf8=false): ?array{
 		$strlen 		= $utf8 ? mb_strlen($str) : strlen($str);
 		$non_printable 	= preg_match_all(self::PATTERN_FILTER_PRINT_S.($utf8 ? 'u' : ''), $str);
 		$printable 		= preg_match_all(self::PATTERN_MATCH_PRINT_S.($utf8 ? 'u' : ''), $str);
 		
-		return !$printable || $printable != $strlen - $non_printable ? false : true;
+		if(!$printable || $printable != $strlen - $non_printable){
+			return [
+				'all'			=> $strlen,
+				'non_printable'	=> $non_printable,
+				'printable'		=> $printable,
+				'diff'			=> abs($printable - $strlen + $non_printable)
+			];
+		}
+		
+		return null;
 	}
 	
 	static public function trim(string $str, bool $allow_newlines=true): string{
