@@ -37,6 +37,7 @@ class Str {
 		- Therefore [^\PC] is the same as \pC 		(matches control chars)
 	*/
 	
+	
 	const UNICODE_FILTER_PRINT 		= '\P{Cc}\p{Cf}\p{Cn}\p{Cs}';
 	
 	const PATTERN_FILTER_PRINT 		= '/[^'.self::UNICODE_FILTER_PRINT.']/';
