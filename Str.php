@@ -37,9 +37,11 @@ class Str {
 		- Therefore [^\PC] is the same as \pC 		(matches control chars)
 	*/
 	
-	const PATTERN_FILTER_PRINT 		= '/[^\P{Cc}\p{Cf}\p{Cn}\p{Cs}]/';
-	const PATTERN_FILTER_PRINT_N 	= '/[^\P{Cc}\p{Cf}\p{Cn}\p{Cs}\n]/';
-	const PATTERN_FILTER_PRINT_S 	= '/[^\P{Cc}\p{Cf}\p{Cn}\p{Cs}\s]/';
+	const UNICODE_FILTER_PRINT 		= '\P{Cc}\p{Cf}\p{Cn}\p{Cs}';
+	
+	const PATTERN_FILTER_PRINT 		= '/[^'.self::UNICODE_FILTER_PRINT.']/';
+	const PATTERN_FILTER_PRINT_N 	= '/[^'.self::UNICODE_FILTER_PRINT.'\n]/';
+	const PATTERN_FILTER_PRINT_S 	= '/[^'.self::UNICODE_FILTER_PRINT.'\s]/';
 	
 	const PATTERN_MATCH_PRINT_S 	= '/[\PC\s]/';
 	
