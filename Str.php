@@ -2,11 +2,32 @@
 
 namespace Str;
 
+// https://stackoverflow.com/questions/1176904/how-to-remove-all-non-printable-characters-in-a-string
+
 class Str {
 	const ENC_UTF8 			= 'UTF-8';
 	const ENC_LATIN 		= 'ISO-8859-1';
 	const ENC_LATIN_WIN 	= 'WINDOWS-1252';
 	
+	//	Non-breaking spaces: https://www.compart.com/en/unicode/U+00A0
+	private const NBSP 				= '\xA0';
+	private const NBSP_UTF8 		= '\xC2'.self::NBSP;
+	private const NBSP_UTF16 		= '\x00'.self::NBSP;
+	
+	//	Zero-width space: https://www.compart.com/en/unicode/U+200B
+	private const ZWSP 				= '\x20\x0B'; // same in UTF8
+	//private const ZWNJ 			= '\x20\x0C'; // same in UTF8
+	//private const ZWJ 			= '\x20\x0D'; // same in UTF8
+	
+	//	Soft hyphen: https://www.compart.com/en/unicode/U+00AD
+	private const SHY 				= '\xAD';
+	private const SHY_UTF8 			= '\xC2'.self::SHY;
+	private const SHY_UTF16 		= '\x00'.self::SHY;
+	
+	//	Non-breaking hyphen
+	private const NBHY 				= '\x20\x11'; // same in UTF8
+	
+	/*
 	//	Non-breaking spaces
 	const NBSP 				= "\xA0";
 	const NBSP_UTF8 		= "\xC2".self::NBSP;
@@ -19,13 +40,7 @@ class Str {
 	
 	//	Non-breaking hyphen
 	const NBHY 				= "\x20\x11";
-	
-	//	Dashes
-	// https://en.wikipedia.org/wiki/Hyphen#Soft_and_hard_hyphens
-	// figure dash
-	// en dash
-	// em dash
-	// horizontal bar
+	*/
 	
 	/*
 		https://www.regular-expressions.info/unicode.html
@@ -37,14 +52,13 @@ class Str {
 		- Therefore [^\PC] is the same as \pC 		(matches control chars)
 	*/
 	
+	private const UNICODE_FILTER_PRINT 		= '\P{Cc}\p{Cf}\p{Cn}\p{Cs}';
 	
-	const UNICODE_FILTER_PRINT 		= '\P{Cc}\p{Cf}\p{Cn}\p{Cs}';
+	private const PATTERN_FILTER_PRINT 		= '/[^'.self::UNICODE_FILTER_PRINT.']/';
+	private const PATTERN_FILTER_PRINT_N 	= '/[^'.self::UNICODE_FILTER_PRINT.'\n]/';
+	private const PATTERN_FILTER_PRINT_S 	= '/[^'.self::UNICODE_FILTER_PRINT.'\s]/';
 	
-	const PATTERN_FILTER_PRINT 		= '/[^'.self::UNICODE_FILTER_PRINT.']/';
-	const PATTERN_FILTER_PRINT_N 	= '/[^'.self::UNICODE_FILTER_PRINT.'\n]/';
-	const PATTERN_FILTER_PRINT_S 	= '/[^'.self::UNICODE_FILTER_PRINT.'\s]/';
-	
-	const PATTERN_MATCH_PRINT_S 	= '/[\PC\s]/';
+	private const PATTERN_MATCH_PRINT_S 	= '/[\PC\s]/';
 	
 	static public function filter_utf8(string $str, string $encoding=self::ENC_LATIN, string $allow_whitespace='n', bool $strip_mb4=true): string{
 		switch($allow_whitespace){
@@ -120,7 +134,11 @@ class Str {
 	}
 	
 	static public function normalize(string &$str): void{
-		if(strpos($str, self::NBSP) !== false){
+		$str = preg_replace('/'.self::NBSP.'|'.self::ZWSP.'/u', ' ', $str);
+		$str = preg_replace('/'.self::SHY.'|'.self::NBHY.'/u', '-', $str);
+		//$str = preg_replace('/'.self::ZWNJ.'|'.self::ZWJ.'/u', '', $str);
+		
+		/*if(strpos($str, self::NBSP) !== false){
 			$str = strtr($str, [
 				self::NBSP_UTF8 	=> ' ',
 				self::NBSP_UNICODE 	=> ' '
@@ -143,7 +161,7 @@ class Str {
 		if(strpos($str, self::NBHY) !== false){
 			//	Avoid breaking UTF8 unicode chars
 			$str = preg_replace('/\x20\x11/u', '-', $str);
-		}
+		}*/
 	}
 	
 	static private function strip_mb4(string $str): string{
