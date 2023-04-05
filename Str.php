@@ -19,8 +19,8 @@ class Str {
 	private const ZWSP_UTF8 		= '\xE2\x80\x8B';
 	private const ZWSP_UTF16 		= '\x20\x0B';
 	private const ZWSP_UNICODE 		= '200B';
-	//private const ZWNJ 			= '\x20\x0C';
-	//private const ZWJ 			= '\x20\x0D';
+	//private const ZWNJ_UTF16 		= '\x20\x0C';
+	//private const ZWJ_UTF16 		= '\x20\x0D';
 	
 	//	Soft hyphen: https://www.compart.com/en/unicode/U+00AD
 	private const SHY 				= '\xAD';
