@@ -130,14 +130,14 @@ class Str {
 	
 	static public function normalize(string &$str, bool $utf8=true): void{
 		if($utf8){
-			$str = preg_replace('/\x{'.self::NBSP_UNICODE.'}/u', ' ', $str);
-			$str = preg_replace('/[\x{'.self::ZWSP_UNICODE.'}\x{'.self::SHY_UNICODE.'}]/u', '', $str);
-			$str = preg_replace('/\x{'.self::NBHY_UNICODE.'}/u', '-', $str);
+			$str = preg_replace('/\x{'.self::NBSP_UNICODE.'}/u', ' ', $str) ?? '';
+			$str = preg_replace('/[\x{'.self::ZWSP_UNICODE.'}\x{'.self::SHY_UNICODE.'}]/u', '', $str) ?? '';
+			$str = preg_replace('/\x{'.self::NBHY_UNICODE.'}/u', '-', $str) ?? '';
 		}
 		else{
-			$str = preg_replace('/'.self::NBSP_UTF16.'|'.self::NBSP_UTF8.'|'.self::NBSP.'/', ' ', $str);
-			$str = preg_replace('/'.self::ZWSP_UTF16.'|'.self::ZWSP_UTF8.'|'.self::SHY_UTF16.'|'.self::SHY_UTF8.'|'.self::SHY.'/', '', $str);
-			$str = preg_replace('/'.self::NBHY_UTF16.'|'.self::NBHY_UTF8.'/', '-', $str);
+			$str = preg_replace('/'.self::NBSP_UTF16.'|'.self::NBSP_UTF8.'|'.self::NBSP.'/', ' ', $str) ?? '';
+			$str = preg_replace('/'.self::ZWSP_UTF16.'|'.self::ZWSP_UTF8.'|'.self::SHY_UTF16.'|'.self::SHY_UTF8.'|'.self::SHY.'/', '', $str) ?? '';
+			$str = preg_replace('/'.self::NBHY_UTF16.'|'.self::NBHY_UTF8.'/', '-', $str) ?? '';
 		}
 	}
 	
