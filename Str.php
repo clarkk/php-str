@@ -105,8 +105,8 @@ class Str {
 		return null;
 	}
 	
-	static public function trim(string $str, bool $allow_newlines=true): string{
-		self::normalize($str);
+	static public function trim(string $str, bool $allow_newlines=true, bool $utf8=true): string{
+		self::normalize($str, $utf8);
 		
 		if($allow_newlines){
 			$has_newline = strpos($str, "\n") !== false;
