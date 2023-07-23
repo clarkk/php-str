@@ -141,6 +141,17 @@ class Str {
 		}
 	}
 	
+	static public function simplify(string $str): string{
+		// https://www.w3schools.com/charsets/ref_html_entities_4.asp
+		
+		$html = htmlentities($str, ENT_QUOTES, self::ENC_UTF8);
+		if(strpos($html, '&') === false){
+			return $str;
+		}
+		
+		return html_entity_decode(preg_replace('/&([a-z]{1,2})(?:grave|acute|circ|tilde|uml|ring|lig|cedil|slash);/i', '$1', $html), ENT_QUOTES, self::ENC_UTF8);
+	}
+	
 	static private function strip_mb4(string $str): string{
 		// https://www.compart.com/en/unicode/plane
 		// https://unicode.org/emoji/charts/index.html
