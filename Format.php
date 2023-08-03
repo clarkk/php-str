@@ -65,7 +65,12 @@ class Format {
 			}
 		}
 		
-		return round((float)str_replace(',', '.', $amount) * 100);
+		$int = round((float)str_replace(',', '.', $amount) * 100);
+		if(preg_match('/[^\d.\-]/', $int)){
+			return 0;
+		}
+		
+		return $int;
 	}
 	
 	static public function datasize(int $int): string{
