@@ -38,7 +38,7 @@ class Format {
 		$xml 	= simplexml_load_string($xml);
 		$json 	= json_encode($xml);
 		
-		return json_decode($json, true);
+		return json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 	}
 	
 	static public function dec(float $num, int $dec=0, ?string $decimal_sep=null): string{
