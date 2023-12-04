@@ -16,6 +16,8 @@ class Format {
 	const DECIMAL_POINT = 'decimal_point';
 	const THOUSAND_SEP 	= 'thousands_sep';
 	
+	const BLOCK_SIZE = 4096;
+	
 	static public function init(string $locale){
 		setlocale(LC_MONETARY, $locale);
 		$localeconv = localeconv();
@@ -86,5 +88,9 @@ class Format {
 		}
 		
 		return '0';
+	}
+	
+	static public function datasize_block(int $int): int{
+		return ceil($int / self::BLOCK_SIZE) * self::BLOCK_SIZE;
 	}
 }
