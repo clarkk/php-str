@@ -57,7 +57,7 @@ class Format {
 		$t 		= strrpos($amount, self::$thousand_sep);
 		
 		if($d !== false && $t !== false){
-			//	Strip thousand seperator
+			//	Strip thousand separator
 			$amount = str_replace(max($d, $t) == $d ? self::$thousand_sep : self::$decimal_point, '', $amount);
 		}
 		elseif($d !== false || $t !== false){
